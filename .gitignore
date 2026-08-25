@@ -1,0 +1,20 @@
+# Vercel
+.vercel
+
+# Dependencies
+node_modules
+
+# Build output
+dist
+server
+tmp
+
+# Local analysis output — Lighthouse runs are reference material for a
+# specific change, not something the repo should carry
+reports
+
+# Editor
+.idea
+
+# OS
+.DS_Store

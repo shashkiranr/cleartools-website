@@ -1,0 +1,280 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/**
+ * Google Sans Flex — the single typeface for the whole site.
+ *
+ * Previously three families (Inter / JetBrains Mono / Newsreader) came from
+ * fonts.googleapis.com. That cost a three-deep request chain on the critical
+ * path (HTML -> Google's CSS -> gstatic woff2), a render-blocking stylesheet on
+ * a third-party origin, and 211kB of font data — 131kB of which was a Newsreader
+ * *italic* file nothing on the site uses. Self-hosting one variable font
+ * collapses that to a single same-origin request for 36kB, and means the site
+ * makes no third-party requests at all, matching the claim the product makes.
+ *
+ * This is the `latin` subset straight from Google's css2 API, so the
+ * `unicode-range` below is theirs verbatim. Note what it does *not* cover: the
+ * symbols in the demo panels (✓ ▾ ▮ ▲ ● ↗ ▌ ⌘) sit outside it and fall through
+ * to the system fallbacks in the `@theme` tokens — which is exactly what they
+ * did under Inter, whose latin subset declared the identical range.
+ *
+ * To refresh, re-fetch the `latin` block from:
+ *   fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400..700&display=swap
+ * The file covers 400-700 in one variable axis; the site uses 400, 600 and 700.
+ * License: public/fonts/OFL.txt (the OFL requires it ship alongside the font).
+ */
+@font-face {
+  font-family: "Google Sans Flex";
+  font-style: normal;
+  font-weight: 400 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("/fonts/google-sans-flex-latin-var.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
+@theme {
+  --color-light-foundation: #f9f9f9;
+  --color-dark-foundation: #000000;
+  --color-light-base: #fbfefb;
+  --color-dark-base: #18181b;
+
+  --color-twitter: #1da1f2;
+  --color-facebook: #1877f2;
+  --color-discord: #5865f2;
+  --color-linkedin: #0077b5;
+  --color-whatsapp: #128c7e;
+  --color-reddit: #ff4500;
+  --color-github: #24292f;
+
+  --color-accent-dark: #fb923c;
+  --color-accent-light: #991b1b;
+
+  --color-dark-text-color: #f4f4f5;
+  --color-light-text-color: #1f2937;
+  --color-secondary-color-light: #575760;
+  --color-secondary-color-dark: #a3a3a3;
+
+  /**
+   * All three roles resolve to Google Sans Flex. The roles are kept distinct
+   * rather than collapsed into one token so the `font-mono` / `font-serif`
+   * utilities in the markup keep their meaning — and so a different face can be
+   * dropped back into either role by editing one line here.
+   *
+   * The fallback stacks still differ on purpose: they are what renders the
+   * glyphs outside the latin subset (✓ ▾ ▮ ● ⌘ in the demo panels), so
+   * `font-mono` keeps a monospaced fallback for those.
+   */
+  --font-sans: "Google Sans Flex", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Google Sans Flex", ui-monospace, monospace;
+  --font-serif: "Google Sans Flex", ui-sans-serif, system-ui, sans-serif;
+
+  --breakpoint-xs: 336px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1356px;
+  --breakpoint-3xl: 1728px;
+
+  --radius-4xl: 32px;
+  --radius-5xl: 48px;
+  --radius-6xl: 64px;
+  --radius-7xl: 128px;
+  --radius-8xl: 256px;
+}
+
+/*!***/
+/* * The page shell shared by the markdown routes — /acknowledgements and*/
+/* * /privacy — applied to the <main> each route's layout.tsx slots its content*/
+/* * into.*/
+/* **/
+/* * Third-party notices include license text rendered as <pre><code>. Some*/
+/* * licenses contain entire paragraphs on one line, so the browser's default*/
+/* * `white-space: pre` sizing can make the route thousands of pixels wide.*/
+/* *!*/
+/*.doc-content {*/
+/*  box-sizing: border-box;*/
+/*  width: 100%;*/
+/*  max-width: 56rem;*/
+/*  min-width: 0;*/
+/*  margin-inline: auto;*/
+/*  padding: 3rem 1.5rem;*/
+/*  overflow-wrap: anywhere;*/
+/*}*/
+
+/*.doc-content pre {*/
+/*  max-width: 100%;*/
+/*  white-space: pre-wrap;*/
+/*  overflow-wrap: anywhere;*/
+/*  word-break: break-word;*/
+/*}*/
+
+/*.doc-content pre code {*/
+/*  white-space: inherit;*/
+/*}*/
+
+/*@media (min-width: 48rem) {*/
+/*  .doc-content {*/
+/*    padding-inline: 4rem;*/
+/*  }*/
+/*}*/
+
+/*!***/
+/* * Typography for the markdown routes. Every other page is hand-written JSX*/
+/* * where Tailwind utilities carry the sizing, so the site has no base*/
+/* * typography — preflight's `h1..h6 { font-size: inherit }`,*/
+/* * `ul { list-style: none }` and `* { margin: 0 }` are the only rules that*/
+/* * reach markdown output, which lands classless. Without these the pages render*/
+/* * as one flat wall of text, package names on the notices page read the same as*/
+/* * their license blocks, and the policy's tables lose their cell borders.*/
+/* **/
+/* * These rules are unlayered, so they beat preflight (which lives in*/
+/* * `@layer base`) regardless of specificity.*/
+/* *!*/
+/*.doc-content {*/
+/*  line-height: 1.7;*/
+/*}*/
+
+/*.doc-content h1,*/
+/*.doc-content h2,*/
+/*.doc-content h3 {*/
+/*  font-weight: 700;*/
+/*  line-height: 1.25;*/
+/*  text-wrap: balance;*/
+/*}*/
+
+/*.doc-content h1 {*/
+/*  font-size: 2rem;*/
+/*  margin-block-end: 1.5rem;*/
+/*}*/
+
+/*.doc-content h2 {*/
+/*  font-size: 1.5rem;*/
+/*  margin-block: 2.5rem 1rem;*/
+/*}*/
+
+/*.doc-content h3 {*/
+/*  font-size: 1.125rem;*/
+/*  margin-block: 2rem 0.75rem;*/
+/*}*/
+
+/*.doc-content p {*/
+/*  margin-block: 1rem;*/
+/*}*/
+
+/*.doc-content ul,*/
+/*.doc-content ol {*/
+/*  margin-block: 1rem;*/
+/*  padding-inline-start: 1.5rem;*/
+/*}*/
+
+/*.doc-content ul {*/
+/*  list-style: disc;*/
+/*}*/
+
+/*.doc-content ol {*/
+/*  list-style: decimal;*/
+/*}*/
+
+/*.doc-content li {*/
+/*  margin-block: 0.5rem;*/
+/*}*/
+
+/*.doc-content a {*/
+/*  font-weight: 400;*/
+/*  color: var(--color-accent-light);*/
+/*  text-decoration: underline;*/
+/*  text-underline-offset: 2px;*/
+/*}*/
+/*:where(.dark) .doc-content a {*/
+/*  color: var(--color-accent-dark);*/
+/*}*/
+
+/*!* The anchor rehype-autolink-headings injects into every heading. *!*/
+/*.doc-content :is(h1, h2, h3) a {*/
+/*  color: inherit;*/
+/*  text-decoration: none;*/
+/*}*/
+
+/*!***/
+/* * `--font-mono` resolves to Google Sans Flex like everything else, so inline*/
+/* * code is otherwise indistinguishable from the prose around it. The policy*/
+/* * leans on it for permission names, error types and hostnames.*/
+/* *!*/
+/*.doc-content :not(pre) > code {*/
+/*  border-radius: 0.25rem;*/
+/*  background: color-mix(in srgb, currentColor 8%, transparent);*/
+/*  padding: 0.1em 0.35em;*/
+/*  font-size: 0.9375em;*/
+/*}*/
+
+/*.doc-content hr {*/
+/*  margin-block: 2.5rem;*/
+/*  border-top: 1px solid color-mix(in srgb, currentColor 15%, transparent);*/
+/*}*/
+
+/*!***/
+/* * Qwik Router's mdx pipeline wraps every table in `div.table-wrapper`, so that*/
+/* * is the element that scrolls on narrow screens.*/
+/* *!*/
+/*.doc-content .table-wrapper {*/
+/*  max-width: 100%;*/
+/*  margin-block: 1.5rem;*/
+/*  overflow-x: auto;*/
+/*}*/
+
+/*.doc-content table {*/
+/*  width: 100%;*/
+/*  border-collapse: collapse;*/
+/*}*/
+
+/*.doc-content th,*/
+/*.doc-content td {*/
+/*  padding: 0.625rem 0.875rem;*/
+/*  border: 1px solid color-mix(in srgb, currentColor 15%, transparent);*/
+/*  text-align: start;*/
+/*  vertical-align: top;*/
+/*  !***/
+/*   * Undo the shared `overflow-wrap: anywhere`, which is there for the notices*/
+/*   * page's license text — inside a narrow cell it hyphenlessly splits*/
+/*   * identifiers like `clipboardWrite`. The wrapper above scrolls instead.*/
+/*   *!*/
+/*  overflow-wrap: normal;*/
+/*}*/
+
+/*.doc-content th {*/
+/*  font-weight: 600;*/
+/*}*/
+
+/**
+ * Site logo (header). Driven by background-image rather than two <img> tags so
+ * only the icon for the active theme is fetched — see the comment in header.tsx.
+ * The plain `url()` line is the fallback for engines without `image-set`; the
+ * cascade means only the winning declaration's file is ever downloaded.
+ */
+.site-logo {
+  background-image: url("/icons/light/icon-256.png");
+  background-image: image-set(
+    url("/icons/light/icon-128.png") 1x,
+    url("/icons/light/icon-256.png") 2x
+  );
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: drop-shadow(0 1px 4px rgba(31, 41, 55, 0.1))
+    drop-shadow(0 1px 1px rgba(31, 41, 55, 0.08));
+}
+:where(.dark) .site-logo {
+  background-image: url("/icons/dark/icon-256.png");
+  background-image: image-set(
+    url("/icons/dark/icon-128.png") 1x,
+    url("/icons/dark/icon-256.png") 2x
+  );
+  filter: none;
+}
+
