@@ -9,22 +9,22 @@
   "description": "Clear Tools — a suite of tools for the next phase of the web.",
   "icons": [
     {
-      "src": "/icons/light/icon-192.png",
-      "sizes": "192x192",
+      "src": "/icons/light/cleartools-light-128.png",
+      "sizes": "128x128",
       "type": "image/png"
     },
     {
-      "src": "/icons/light/icon-256.png",
+      "src": "/icons/light/cleartools-light-256.png",
       "sizes": "256x256",
       "type": "image/png"
     },
     {
-      "src": "/icons/light/icon-512.png",
+      "src": "/icons/light/cleartools-light-512.png",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "/icons/light/icon-1024.png",
+      "src": "/icons/light/cleartools-light-1024.png",
       "sizes": "1024x1024",
       "type": "image/png"
     }

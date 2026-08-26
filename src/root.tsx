@@ -26,23 +26,32 @@ export default component$(() => {
         <script dangerouslySetInnerHTML={themeInitScript} />
 
         {/*
-          The real product icon, light/dark matched. These files are supplied by
-          the user under public/icons/{light,dark}/ — PNG only, there is no
-          vector source.
+          The real product icon, supplied by the user under
+          public/icons/{light,dark}/ — PNG only, there is no vector source.
+
+          The *light* icon is the favicon in both themes, deliberately: it is a
+          near-white rounded plate with a dark glyph, which reads on light and
+          dark browser chrome alike. The dark icon is a black plate that
+          disappears into a dark tab strip. So no `media` matching here — the
+          dark set is used by the header logo (see .site-logo in global.css),
+          where it sits on the page's own dark background.
         */}
         <link
           rel="icon"
           type="image/png"
-          href="/icons/light/favicon.png"
-          media="(prefers-color-scheme: light)"
+          sizes="32x32"
+          href="/icons/light/cleartools-light-32.png"
         />
         <link
           rel="icon"
           type="image/png"
-          href="/icons/dark/favicon.png"
-          media="(prefers-color-scheme: dark)"
+          sizes="16x16"
+          href="/icons/light/cleartools-light-16.png"
         />
-        <link rel="apple-touch-icon" href="/icons/light/icon-256.png" />
+        <link
+          rel="apple-touch-icon"
+          href="/icons/light/cleartools-light-256.png"
+        />
         <link rel="manifest" href="/manifest.json" />
 
         <meta
