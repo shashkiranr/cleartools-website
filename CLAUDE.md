@@ -8,7 +8,6 @@ The marketing/product website for **Clear Tools**, built with Qwik + QwikRouter 
 deployed to Vercel at **clear.tools**. This repo (`cleartools-website`) is the site only —
 it does not contain the product itself.
 
-
 ## The product (for site copy/content)
 
 **Clear Tools** — is a suite of propitiatory software products for the next phase of Web 3.0 .
@@ -77,12 +76,23 @@ workflow below); there's no single script that bundles them here yet.
   a token — add a named `@theme` token instead only once one of these is reused enough to
   justify it).
 - **Site icon/favicon**: `public/icons/light/` and `public/icons/dark/` hold the real product
-  icon at every size (`favicon.png`, `icon-16` through `icon-1024`), supplied by the user.
-  `src/root.tsx` serves the light/dark favicon via `prefers-color-scheme` media-matched
-  `<link rel="icon">` tags and uses the light `icon-256.png` as the `apple-touch-icon`. The old
-  generic Qwik `public/favicon.svg` has been removed. PNG only — there's no vector source for
-  the icon, so don't add an SVG favicon unless a real vector version shows up later.
-  `public/manifest.json` references these same icons and real product name/description.
+  icon, supplied by the user, named `cleartools-<theme>-<size>.png` for sizes 16, 32, 48, 64,
+  96, 128, 256, 512 and 1024, plus a `cleartools-<theme>-512-transparent.png` (no rounded-square
+  plate) and a `favicon-32.png` duplicate of the 32px file. Note there is **no 192px** file, so
+  don't write a `192x192` manifest entry. `src/root.tsx` serves the **light** 16/32 as the
+  favicon in _both_ themes — no `media` matching, because the light
+  icon is a near-white plate that reads on light and dark browser chrome alike while the dark
+  one vanishes into a dark tab strip — and the light `cleartools-light-256.png` as the
+  `apple-touch-icon`. `public/manifest.json` lists the light 128/256/512/1024 (manifests have no
+  theme-matching, so light only). The old generic Qwik `public/favicon.svg` has been removed.
+  PNG only — there's no vector source for the icon, so don't add an SVG favicon unless a real
+  vector version shows up later. The **header logo** is the one place the dark icons are used:
+  `.site-logo` in `global.css` swaps light/dark off the site's own `.dark` class (not the OS
+  theme) via `image-set`, and `header.tsx` renders it as a decorative `aria-hidden` span. Its
+  size and the header's height are coupled — a 90px `size-[90px]` box inside an `h-28` bar, with
+  the `image-set` pair (128/256) sized to stay above it. Change one, change all three. These
+  paths are plain strings that Vite does not verify (except the CSS `url()`s), so after renaming
+  any icon re-check every reference resolves.
 - Partytown is wired in (`src/components/partytown/partytown.tsx`, `partytownVite` in
   `vite.config.ts`) for offloading third-party scripts to a web worker, but nothing currently
   uses it.
@@ -90,7 +100,7 @@ workflow below); there's no single script that bundles them here yet.
 ## Conventions
 
 - Prettier formats via `prettier-plugin-tailwindcss` (sorts Tailwind classes) — run `npm run
-  fmt` rather than hand-ordering classes.
+fmt` rather than hand-ordering classes.
 - ESLint: `eslint-plugin-qwik` recommended rules plus `typescript-eslint` recommended;
   `@typescript-eslint/no-explicit-any` is turned off.
 - Component tests (`*.spec.tsx`) use `@qwik.dev/core/testing`'s `createDOM()` + Vitest, not
@@ -100,7 +110,7 @@ workflow below); there's no single script that bundles them here yet.
 
 ## Git workflow
 
-Adapted from  `docs/GIT-WORKFLOW.md`
+Adapted from `docs/GIT-WORKFLOW.md`
 
 - **`main` holds completed, verified work.** Do a unit of work (a feature, a page, a fix) on
   its own branch, open a PR, and squash-merge — one commit per PR on `main`, regardless of how
@@ -118,6 +128,7 @@ Adapted from  `docs/GIT-WORKFLOW.md`
   fix(layout): correct mobile nav overflow
   chore(deps): bump qwik to 2.0.0-beta.39
   ```
+
 - **No AI attribution trailers.** Do not add `Co-Authored-By: Claude ...` or
   `Claude-Session: ...` lines to commit messages or PR descriptions — this is a solo repo and
   those trailers have no reader. Plain commit body, no trailer.
@@ -128,9 +139,8 @@ Adapted from  `docs/GIT-WORKFLOW.md`
 
 ## Common Enforced Behavior
 
-- **DO NOT cd into pwd**: Never cd /.../PWD. Don't waste tokens into cd-ing into folders 
-you already have access to
+- **DO NOT cd into pwd**: Never cd /.../PWD. Don't waste tokens into cd-ing into folders
+  you already have access to
 - **NEVER EVER run outside PWD**: Do not create `/tmp` outside the current PWD. Never run servers inside `/private/tmp`
 - **NEVER EVER MERGE into main without approval**: Do not merge PR into main without approval
 - **NEVER EVER DEPLOY without approval**: Do not deploy without approval
-

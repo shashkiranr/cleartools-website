@@ -254,14 +254,25 @@
 /**
  * Site logo (header). Driven by background-image rather than two <img> tags so
  * only the icon for the active theme is fetched — see the comment in header.tsx.
- * The plain `url()` line is the fallback for engines without `image-set`; the
- * cascade means only the winning declaration's file is ever downloaded.
+ * The plain `url()` line is a fallback for engines without `image-set`, though
+ * Lightning CSS strips it at build time and emits `-webkit-image-set` in its
+ * place; either way only the winning declaration's file is downloaded.
+ *
+ * The theme here is the *site's* (`.dark`, set by the theme toggle), not the
+ * OS's — unlike the favicon in root.tsx, which is always the light icon. The
+ * dark plate works in the header precisely because it sits on the page's own
+ * dark background.
+ *
+ * The 128/256 pair backs the 90px box header.tsx gives it (`size-[90px]`).
+ * Both are oversized on purpose — 90px needs 90 at 1x and 180 at 2x, and the
+ * next sizes up (128, 256) are what the icon set actually ships, so the art is
+ * always downscaled rather than stretched. Bump both if that box grows again.
  */
 .site-logo {
-  background-image: url("/icons/light/icon-256.png");
+  background-image: url("/icons/light/cleartools-light-256.png");
   background-image: image-set(
-    url("/icons/light/icon-128.png") 1x,
-    url("/icons/light/icon-256.png") 2x
+    url("/icons/light/cleartools-light-128.png") 1x,
+    url("/icons/light/cleartools-light-256.png") 2x
   );
   background-size: contain;
   background-repeat: no-repeat;
@@ -270,11 +281,10 @@
     drop-shadow(0 1px 1px rgba(31, 41, 55, 0.08));
 }
 :where(.dark) .site-logo {
-  background-image: url("/icons/dark/icon-256.png");
+  background-image: url("/icons/dark/cleartools-dark-256.png");
   background-image: image-set(
-    url("/icons/dark/icon-128.png") 1x,
-    url("/icons/dark/icon-256.png") 2x
+    url("/icons/dark/cleartools-dark-128.png") 1x,
+    url("/icons/dark/cleartools-dark-256.png") 2x
   );
   filter: none;
 }
-
